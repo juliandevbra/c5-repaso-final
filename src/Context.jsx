@@ -6,14 +6,17 @@ const PokeStates = createContext()
 const initialPokeState = {
     pokeList: [],
     pokemon: {},
+    favs: JSON.parse(localStorage.getItem('favs')) || []
 }
 
 const pokeReducer = (state, action) => {
     switch(action.type){
         case 'GET_LIST':
-            return {pokeList: action.payload, pokemon: state.pokemon}
+            return {...state, pokeList: action.payload }
         case 'GET_POKE': 
-            return {pokeList: state.pokeList, pokemon: action.payload}
+            return {...state, pokemon: action.payload}
+        case 'ADD_FAV':
+            return {...state, favs: [...state.favs, action.payload]}
         default:
             throw new Error()
     }
@@ -28,6 +31,10 @@ const Context = ({children}) => {
         axios(urlList)
         .then(res => pokeDispatch({type: 'GET_LIST', payload: res.data.results}))
     }, [urlList])
+
+    useEffect(() => {
+        localStorage.setItem('favs', JSON.stringify(pokeState.favs))
+    }, [pokeState.favs])
 
     return(
         <PokeStates.Provider value={{

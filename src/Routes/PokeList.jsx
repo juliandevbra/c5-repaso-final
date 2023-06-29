@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link, useParams } from 'react-router-dom'
+import Card from '../Component/Card'
 import { usePokeStates } from '../Context'
 
 const PokeList = () => {
@@ -9,9 +10,7 @@ const PokeList = () => {
     console.log(params)
   return (
     <div>
-        {pokeState.pokeList.map(poke => <Link to={'/poke/' + poke.name} key={poke.name}>
-                <li>{poke.name}</li>
-            </Link>)}
+        {pokeState.pokeList.map(poke => <Card poke={poke} key={poke.name}/>)}
     </div>
   )
 }

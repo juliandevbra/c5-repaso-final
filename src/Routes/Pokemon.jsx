@@ -3,6 +3,8 @@ import React from 'react'
 import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { usePokeStates } from '../Context'
+import pokeball from '../assets/Poké_Ball_icon.svg'
+
 
 const Pokemon = () => {
     const {pokeState, pokeDispatch} = usePokeStates()
@@ -18,12 +20,16 @@ const Pokemon = () => {
         })
     }, [])
     
+    const addFav = () => {
+      pokeDispatch({type: 'ADD_FAV', payload: pokeState.pokemon})
+    }
 
   return (
-    <div>
+    <div style={{display: 'flex', flexDirection: 'column'}}>
         {pokeState.pokemon.name}
-        <img src={pokeState.pokemon.sprites?.front_default} alt="" />
+        <img src={pokeState.pokemon.sprites?.front_default} width={150} alt="" />
         {pokeState.pokemon.abilities?.map(ability => <li>{ability.ability.name}</li>)}
+        <button onClick={addFav}><img width={30} src={pokeball} alt="" /></button>
     </div>
   )
 }
