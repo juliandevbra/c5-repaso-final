@@ -1,49 +1,52 @@
 import axios from "axios"
 import { createContext, useContext, useState, useReducer, useEffect } from "react"
 
-const PokeStates = createContext()
+const CharStates = createContext()
 
-const initialPokeState = {
-    pokeList: [],
-    pokemon: {},
+const initialCharState = {
+    charList: [],
+    char: {},
     favs: JSON.parse(localStorage.getItem('favs')) || []
 }
 
-const pokeReducer = (state, action) => {
+const charReducer = (state, action) => {
     switch(action.type){
         case 'GET_LIST':
-            return {...state, pokeList: action.payload }
-        case 'GET_POKE': 
-            return {...state, pokemon: action.payload}
+            return {...state, charList: action.payload }
+        case 'GET_CHAR': 
+            return {...state, char: action.payload}
         case 'ADD_FAV':
             return {...state, favs: [...state.favs, action.payload]}
+        case 'DELETE_FAV':
+            return {...state, favs: action.payload}
         default:
             throw new Error()
     }
 }
 
 const Context = ({children}) => {
-    const [pokeState, pokeDispatch] = useReducer(pokeReducer, initialPokeState)
+    const [charState, charDispatch] = useReducer(charReducer, initialCharState)
 
-    const urlList = `https://pokeapi.co/api/v2/pokemon?limit=20&offset=0`
+    // const urlList = `https://pokeapi.co/api/v2/pokemon?limit=20&offset=0`
+    const urlList = 'https://rickandmortyapi.com/api/character'
 
     useEffect(() => {
         axios(urlList)
-        .then(res => pokeDispatch({type: 'GET_LIST', payload: res.data.results}))
+        .then(res => charDispatch({type: 'GET_LIST', payload: res.data.results}))
     }, [urlList])
 
     useEffect(() => {
-        localStorage.setItem('favs', JSON.stringify(pokeState.favs))
-    }, [pokeState.favs])
+        localStorage.setItem('favs', JSON.stringify(charState.favs))
+    }, [charState.favs])
 
     return(
-        <PokeStates.Provider value={{
-            pokeState, pokeDispatch
+        <CharStates.Provider value={{
+            charState, charDispatch
         }}>
             {children}
-        </PokeStates.Provider>
+        </CharStates.Provider>
     )
 }
 export default Context
 
-export const usePokeStates = () => useContext(PokeStates)
+export const useCharStates = () => useContext(CharStates)
