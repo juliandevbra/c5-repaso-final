@@ -1,5 +1,7 @@
 import axios from "axios"
 import { createContext, useContext, useState, useReducer, useEffect } from "react"
+import { toast } from "react-toastify"
+import Swal from "sweetalert2"
 
 const CharStates = createContext()
 
@@ -32,7 +34,27 @@ const Context = ({children}) => {
 
     useEffect(() => {
         axios(urlList)
-        .then(res => charDispatch({type: 'GET_LIST', payload: res.data.results}))
+        .then(res => {
+            charDispatch({type: 'GET_LIST', payload: res.data.results})
+            toast('Se obtuvo la lista de personajes', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+            })
+        })
+        .catch(err => Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Error al traer la lista de personajes',
+            footer: err,
+            timer: 5000,
+            timerProgressBar: true,
+          }))
     }, [urlList])
 
     useEffect(() => {

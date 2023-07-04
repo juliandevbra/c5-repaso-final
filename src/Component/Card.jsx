@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link, Navigate } from 'react-router-dom'
 import { useCharStates } from '../Context'
+import { Paper } from '@mui/material'
 
 const Card = ({char}) => {
   const {charState, charDispatch} = useCharStates()
