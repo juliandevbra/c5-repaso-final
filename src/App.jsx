@@ -1,8 +1,9 @@
 import { Route, Routes } from 'react-router-dom'
 import './App.css'
 import Navbar from './Component/Navbar'
-import PokeList from './Routes/PokeList'
-import Pokemon from './Routes/Pokemon'
+import CharacterList from './Routes/CharacterList'
+import Detail from './Routes/Detail'
+import Favs from './Routes/Favs'
 
 function App() {
 
@@ -11,8 +12,9 @@ function App() {
     <>
     <Navbar/>
       <Routes>
-        <Route path='/' element={<PokeList/>}/>
-        <Route path='/poke/:name' element={<Pokemon/>}/>
+        <Route path='/' element={<CharacterList/>}/>
+        <Route path='/char/:id' element={<Detail/>}/>
+        <Route path='favs' element={<Favs/>}/>
       </Routes>
     </>
   )
